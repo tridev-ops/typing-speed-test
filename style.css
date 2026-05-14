@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --white: #fff;
     --dark: #222;
     --gray: gray;
@@ -10,12 +10,11 @@ body {
     background: var(--dark);
     color: var(--white);
     margin: 0;
-    padding: 0;
+    padding: 16px 44px;
     font-family: Arial;
 }
 
 header {
-    padding: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -106,4 +105,25 @@ select::picker(select) {
     border-bottom: 1px solid var(--gray);
     padding: 20px 0;
     margin: 0;
+} */
+
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('/fonts/my-custom-font.woff2') format('woff2'),
+       url('/fonts/my-custom-font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+    overflow: hidden;
+}
+input[type="radio"]:checked + label {
+  color: #185ee0;
+  border: 1px solid #185ee0;
+}
+
+input[type="radio"] {
+    display:none;
 }

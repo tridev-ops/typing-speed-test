@@ -1,58 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-  <title>Typing Speed Test</title>
-  <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+    <title>Typing Speed Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css" type="text/css" media="all" />
 </head>
-<body>
-<header>
-    <div>
-        <img class="logo" src="./assets/images/logo-small.svg" alt="logo"/>
-    </div>
-    <div>
-        <img class="" src="./assets/images/icon-personal-best.svg" alt="Cup icon"/>
-        <p>Best: <span class="personal-best">PB</span> WPM</p>
-    </div>
-</header>
-  
-<div class="stats">
-    <div>
-        <p>WPM:</p>
-        <span>40</span>
-    </div>
-    <div class="accuracy">
-        <p>Accuracy:</p>
-        <span>90%</span>
-    </div>
-    <div>
-        <p>Time:</p>
-        <span>0:10</span>
-    </div>
-</div>
 
-<div class="option">
-    <select name="difficulty" id="difficulty">
-        <option value="Easy">Easy</option>
-        <option value="Medium">Medium</option>
-        <option value="Hard">Hard</option>
-    </select>
+<body class="bg-black text-white py-8 px-12">
+    <header class="flex justify-between">
+        <div class="flex gap-2 items-center">
+            <img class="logo h-6" src="./assets/images/logo-small.svg" alt="logo" />
+            <div class="flex flex-col justigy-left items-start">
+                <p class="font-bold m-0">Typing Speed test</p>
+                <p class="text-xs m-0 text-gray-300">type as fast as you can in 60 seconds</p>
+            </div>
+        </div>
+        <div class="flex gap-2 items-center">
+            <img class="h-4" src="./assets/images/icon-personal-best.svg" alt="Cup icon" />
+            <p class="text-gray-300">Personal Best: <span class="personal-best text-white font-bold">PB WPM</span></p>
+        </div>
+    </header>
 
-    <select name="mode" id="mode">
-        <option value="Timed">Timed (60s)</option>
-        <option value="Passage">Passage</option>
-    </select>
-</div>
-  <!-- Passage -->
-<div class="passage">
-    <p>
-        The sun rose over the quiet town. Birds sang in the trees as people woke up and started their day. It was going to be a warm and sunny morning.
-    </p>
-</div>
+    <div class="flex mt-8 items-center justify-between">
+        <div class="stats flex gap-8">
+            <div class="flex items-center gap-2">
+                <p class="text-gray-300 text-sm">WPM:</p>
+                <span class="font-bold text-md">40</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <p class="text-gray-300 text-sm">Accuracy:</p>
+                <span class="text-red-400 font-bold text-md">90%</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <p class="text-gray-300 text-sm">Time:</p>
+                <span class="text-yellow-400 font-bold text-md">0:10</span>
+            </div>
+        </div>
 
-<!--
+        <div class="option flex gap-4 ml-4">
+            <div class="flex gap-1 items-center">
+                <p class="text-gray-300 text-sm">Difficulty:</p>
+                <input type="radio" name="difficulty" id="easy">
+                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="easy">Easy</label>
+
+                <input type="radio" name="difficulty" id="medium">
+                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="medium">Medium</label>
+
+                <input type="radio" name="difficulty" id="hard">
+                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="hard">Hard</label>
+            </div>
+            <div class="flex gap-1 items-center">
+                <p class="text-gray-300 text-sm">Mode:</p>
+                <input type="radio" name="mode" id="timed">
+                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="timed">Timed(60s)</label>
+
+                <input type="radio" name="mode" id="passage">
+                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="passage">Passage</label>
+            </div>
+                            
+            <!-- <select name="difficulty" id="difficulty">
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+
+            <select name="mode" id="mode">
+                <option value="Timed">Timed (60s)</option>
+                <option value="Passage">Passage</option>
+            </select> -->
+        </div>
+    </div>
+
+    <hr class="border-gray-700 mt-2">
+    <!-- Passage -->
+    <div class="passage my-8 text-[40px]">
+        <p></p>
+    </div>
+    <hr class="border-gray-700 mt-2">
+
+    <div class="my-8 flex justify-center">
+        <button class="text-lg border-1 border-gray-400 px-2 py-1 rounded-lg">Reset</button>
+    </div>
+
+    <!-- <input type="text" name="passage" id="text" class="bg-white text-black" > -->
+    <!--
   Test Complete!
   Solid run. Keep pushing to beat your high score.
 
@@ -62,6 +97,7 @@
 
   Go Again
   -->
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
