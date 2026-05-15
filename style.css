@@ -115,6 +115,7 @@ select::picker(select) {
 body {
     overflow: hidden;
     font-family: 'Sora';
+    user-select: none;
 }
 
 input[type="radio"]:checked + label {

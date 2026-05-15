@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
     <title>Typing Speed Test</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="style.css" type="text/css" media="all" />
 </head>
 
@@ -42,23 +42,23 @@
         </div>
 
         <div class="option flex gap-4 ml-4">
-            <div class="flex gap-1 items-center">
+            <div class="flex gap-1 items-center difficulty">
                 <p class="text-gray-300 text-sm">Difficulty:</p>
-                <input type="radio" name="difficulty" id="easy">
+                <input type="radio" name="difficulty" id="easy" value="easy" checked>
                 <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="easy">Easy</label>
 
-                <input type="radio" name="difficulty" id="medium">
+                <input type="radio" name="difficulty" id="medium" value="medium">
                 <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="medium">Medium</label>
 
-                <input type="radio" name="difficulty" id="hard">
+                <input type="radio" name="difficulty" id="hard" value="hard">
                 <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="hard">Hard</label>
             </div>
-            <div class="flex gap-1 items-center">
+            <div class="flex gap-1 items-center mode">
                 <p class="text-gray-300 text-sm">Mode:</p>
-                <input type="radio" name="mode" id="timed">
+                <input type="radio" name="mode" id="timed" value="timed" checked>
                 <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="timed">Timed(60s)</label>
 
-                <input type="radio" name="mode" id="passage">
+                <input type="radio" name="mode" id="passage" value="passage">
                 <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="passage">Passage</label>
             </div>
 
