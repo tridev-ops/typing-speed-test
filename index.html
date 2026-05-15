@@ -21,23 +21,23 @@
         </div>
         <div class="flex gap-2 items-center">
             <img class="h-4" src="./assets/images/icon-personal-best.svg" alt="Cup icon" />
-            <p class="text-gray-300">Personal Best: <span class="personal-best text-white font-bold">PB WPM</span></p>
+            <p class="text-gray-300">Personal Best: <span class="text-white font-bold"><span class="personal-best"></span> WPM</span></p>
         </div>
     </header>
 
     <div class="flex mt-8 items-center justify-between">
-        <div class="stats flex gap-8">
+        <div class="stats flex gap-4">
             <div class="flex items-center gap-2">
                 <p class="text-gray-300 text-sm">WPM:</p>
-                <span class="font-bold text-md">40</span>
+                <span class="font-bold text-md wpm">40</span>
             </div>
             <div class="flex items-center gap-2">
                 <p class="text-gray-300 text-sm">Accuracy:</p>
-                <span class="text-red-400 font-bold text-md">90%</span>
+                <span class="text-red-400 font-bold text-md accuracy">90%</span>
             </div>
             <div class="flex items-center gap-2">
                 <p class="text-gray-300 text-sm">Time:</p>
-                <span class="text-yellow-400 font-bold text-md">0:10</span>
+                <span class="text-yellow-400 font-bold text-md time">0:10</span>
             </div>
         </div>
 
@@ -61,7 +61,7 @@
                 <input type="radio" name="mode" id="passage">
                 <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="passage">Passage</label>
             </div>
-                            
+
             <!-- <select name="difficulty" id="difficulty">
                 <option value="Easy">Easy</option>
                 <option value="Medium">Medium</option>
@@ -77,13 +77,19 @@
 
     <hr class="border-gray-700 mt-2">
     <!-- Passage -->
-    <div class="passage my-8 text-[40px]">
+    <div class="passage my-8 text-[40px] relative">
         <p></p>
-    </div>
-    <hr class="border-gray-700 mt-2">
+        <hr class="border-gray-700 mt-8">
+        
+        <div class="my-8 flex justify-center">
+            <button class="text-lg border-1 border-gray-400 px-2 py-1 rounded-lg reset" type="button">Reset</button>
+        </div>
 
-    <div class="my-8 flex justify-center">
-        <button class="text-lg border-1 border-gray-400 px-2 py-1 rounded-lg">Reset</button>
+        <!-- not started -->
+        <div
+            class="not-started backdrop-blur-sm bg-gray/40 flex justify-center items-center z-5 absolute h-full w-full top-[50%] left-[50%] -translate-[50%]">
+            <button type="button" class="bg-blue-500 px-4 py-2 rounded-lg text-lg">Start Typing Test</button>
+        </div>
     </div>
 
     <!-- <input type="text" name="passage" id="text" class="bg-white text-black" > -->
@@ -97,7 +103,7 @@
 
   Go Again
   -->
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 
 </html>
