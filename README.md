@@ -2,6 +2,8 @@
 
 A browser-based typing speed test with timed and passage modes, multiple difficulty levels, and personal best tracking.
 
+![Preview image](/preview.jpg)
+
 ## Features
 
 - **Timed Mode (60s)** — type as many words as you can in 60 seconds
