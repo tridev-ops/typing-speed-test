@@ -5,128 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typing Speed Test</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="style.css" type="text/css" media="all" />
 </head>
 
-<body class="bg-black text-white py-8 px-12 relative">
-    <header class="flex justify-between">
-        <div class="flex gap-2 items-center">
-            <img class="logo h-6" src="./assets/images/logo-small.svg" alt="logo" />
-            <div class="flex flex-col justigy-left items-start">
-                <p class="font-bold m-0">Typing Speed test</p>
-                <p class="text-xs m-0 text-gray-300">type as fast as you can in 60 seconds</p>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <img class="logo" src="./assets/images/logo-small.svg" alt="logo" />
+            <div class="header-title">
+                <h1>Typing Speed test</h1>
+                <p class="subtitle">type as fast as you can in 60 seconds</p>
             </div>
         </div>
-        <div class="flex gap-2 items-center">
-            <img class="h-4" src="./assets/images/icon-personal-best.svg" alt="Cup icon" />
-            <p class="text-gray-300">Personal Best: <span class="text-white font-bold"><span class="personal-best"></span> WPM</span></p>
+        <div class="header-right">
+            <img class="pb-icon" src="./assets/images/icon-personal-best.svg" alt="Cup icon" />
+            <p class="pb-label">Personal Best: <span class="highlight"><span class="personal-best"></span> WPM</span></p>
         </div>
     </header>
 
-    <div class="flex mt-8 items-center justify-between">
-        <div class="stats flex gap-4">
-            <div class="flex items-center gap-2">
-                <p class="text-gray-300 text-sm">WPM:</p>
-                <span class="font-bold text-md wpm">00</span>
+    <div class="controls">
+        <div class="stats-row">
+            <div class="stat-item">
+                <p class="stat-label">WPM:</p>
+                <span class="stat-value wpm">00</span>
             </div>
-            <div class="flex items-center gap-2">
-                <p class="text-gray-300 text-sm">Accuracy:</p>
-                <span class="text-red-400 font-bold text-md accuracy">0%</span>
+            <div class="stat-item">
+                <p class="stat-label">Accuracy:</p>
+                <span class="stat-value accuracy">0%</span>
             </div>
-            <div class="flex items-center gap-2">
-                <p class="text-gray-300 text-sm">Time:</p>
-                <span class="text-yellow-400 font-bold text-md time">0:00</span>
+            <div class="stat-item">
+                <p class="stat-label">Time:</p>
+                <span class="stat-value time">0:00</span>
             </div>
         </div>
 
-        <div class="option flex gap-4 ml-4">
-            <div class="flex gap-1 items-center difficulty">
-                <p class="text-gray-300 text-sm">Difficulty:</p>
+        <div class="options-group">
+            <div class="option-group difficulty">
+                <p class="option-label">Difficulty:</p>
                 <input type="radio" name="difficulty" id="easy" value="easy" checked>
-                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="easy">Easy</label>
-
+                <label for="easy">Easy</label>
                 <input type="radio" name="difficulty" id="medium" value="medium">
-                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="medium">Medium</label>
-
+                <label for="medium">Medium</label>
                 <input type="radio" name="difficulty" id="hard" value="hard">
-                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="hard">Hard</label>
+                <label for="hard">Hard</label>
             </div>
-            <div class="flex gap-1 items-center mode">
-                <p class="text-gray-300 text-sm">Mode:</p>
+            <div class="option-group mode">
+                <p class="option-label">Mode:</p>
                 <input type="radio" name="mode" id="timed" value="timed" checked>
-                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="timed">Timed(60s)</label>
-
+                <label for="timed">Timed(60s)</label>
                 <input type="radio" name="mode" id="passage" value="passage">
-                <label class="px-2 py-1 border-1 border-gray-400 rounded-lg" for="passage">Passage</label>
+                <label for="passage">Passage</label>
             </div>
-
-            <!-- <select name="difficulty" id="difficulty">
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-            </select>
-
-            <select name="mode" id="mode">
-                <option value="Timed">Timed (60s)</option>
-                <option value="Passage">Passage</option>
-            </select> -->
         </div>
     </div>
 
-    <hr class="border-gray-700 mt-2">
-    <!-- Passage -->
-    <div class="passage my-8 text-[40px] relative">
+    <hr class="divider">
+
+    <div class="passage">
         <p></p>
-        <hr class="border-gray-700 mt-8">
+        <hr class="divider">
         
-        <div class="my-8 flex justify-center">
-            <button class="text-lg border-1 border-gray-400 px-2 py-1 rounded-lg reset" type="button">Reset</button>
+        <div class="reset-wrapper">
+            <button class="reset" type="button">Reset</button>
         </div>
 
-        <!-- not started -->
-        <div
-            class="not-started backdrop-blur-sm bg-gray/40 flex justify-center items-center absolute h-full w-full top-[50%] left-[50%] -translate-[50%]">
-            <button type="button" class="bg-blue-500 px-4 py-2 rounded-lg text-lg">Start Typing Test</button>
+        <div class="not-started">
+            <button type="button" class="btn-start">Start Typing Test</button>
         </div>
     </div>
 
-    <div class="results flex flex-col justify-center self-center items-center absolute top-20 left-0 w-full bg-black h-full hidden">
-        <div class="rounded-full border-10 border-green-200 mt-80">
-            <img class="h-20 rounded-full border-10 border-green-300" src="assets/images/icon-completed.svg" alt="">
+    <div class="results hidden">
+        <div class="results-icon">
+            <img src="assets/images/icon-completed.svg" alt="">
         </div>
-        <h2 class="text-[2.5rem] mt-8">Test Completed</h2>
-        <p class="text-gray-300">Solid run, Keep pushing to beat your high score.</p>
-        <div class="flex gap-8 my-8">
-            <div class="border-1 border-gray-500 p-4 rounded-lg w-32">
-                <p class="text-gray-300">WPM</p>
-                <p class="font-bold text-xl wpm">50</p>
+        <h2 class="results-title">Test Completed</h2>
+        <p class="results-subtitle">Solid run, Keep pushing to beat your high score.</p>
+        <div class="results-stats">
+            <div class="result-card">
+                <p class="card-label">WPM</p>
+                <p class="card-value wpm">50</p>
             </div>
-            <div class="border-1 border-gray-500 p-4 rounded-lg w-32">
-                <p class="text-gray-300">Accuracy</p>
-                <p class="font-bold text-xl accuracy">50</p>
+            <div class="result-card">
+                <p class="card-label">Accuracy</p>
+                <p class="card-value accuracy">50</p>
             </div>
-            <div class="border-1 border-gray-500 p-4 rounded-lg w-32">
-                <p class="text-gray-300">Characters</p>
-                <p class="font-bold text-xl character">50</p>
+            <div class="result-card">
+                <p class="card-label">Characters</p>
+                <p class="card-value character">50</p>
             </div>
         </div>
 
-        <button class="bg-white text-black text-lg rounded-lg p-3 go-again">Go Again</button>
+        <button class="go-again">Go Again</button>
     </div>
 
-    <!-- <input type="text" name="passage" id="text" class="bg-white text-black" > -->
-    <!--
-  Test Complete!
-  Solid run. Keep pushing to beat your high score.
-
-  WPM: 
-  Accuracy: 
-  Characters:
-
-  Go Again
-  -->
     <script type="module" src="script.js"></script>
 </body>
 

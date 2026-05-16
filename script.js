@@ -27,8 +27,8 @@ window.addEventListener('load', async () => {
     const data = await loadData()
     let text = 'sun rose over the quiet town'
 
-    const personalBest = localStorage.getItem('personal-best');
-    personalBestSpan.textContent = personalBest || "00"
+    const loadPersonalBest = () => parseInt(localStorage.getItem('personal-best')) || 0
+    personalBestSpan.textContent = loadPersonalBest() || "00"
 
     // List of modifier keys to ignore
     const ignoredKeys = ["Shift", "Control", "Alt", "Meta"]
@@ -56,15 +56,54 @@ window.addEventListener('load', async () => {
     splitPassage()
 
     const calculateWPM = () => {
-        return parseInt((totalWords / count) * 60)
+        if (count === 0) return 0
+        // WPM = (chars typed / 5) / (time in minutes) = (i / 5) / (count / 60) = (i * 12) / count
+        return Math.round((i * 12) / count)
     }
 
     const calculateAccuracy = () => {
-        return parseInt(((text.length - totalWrongChar) / text.length) * 100)
+        if (i === 0) return 100
+        return Math.round(((i - totalWrongChar) / i) * 100)
     }
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    const type = (e) => {
+        // Exit early if the key is in the ignore list
+        if (ignoredKeys.includes(e.key)) return
+
+        if (e.key == "Backspace") {
+            if (i > 0) {
+                if (i < spans.length) {
+                    spans[i].classList.remove('cursor')
+                }
+                i--
+                if (spans[i].classList.contains('incorrect')) {
+                    totalWrongChar = Math.max(0, totalWrongChar - 1)
+                }
+                spans[i].classList.remove('correct', 'incorrect')
+                spans[i].classList.add('normal', 'cursor')
+            }
+        } else {
+            if (e.key == text[i]) {
+                spans[i].classList.add('correct')
+                spans[i].classList.remove('normal')
+                i++
+            } else {
+                spans[i].classList.add('incorrect')
+                spans[i].classList.remove('normal')
+                i++
+                totalWrongChar++
+            }
+
+            if (i < spans.length) {
+                spans[i - 1].classList.remove('cursor')
+                spans[i].classList.add('cursor')
+            }
+            passageMode(i)
+        }
     }
 
     const changeDifficulty = (difficulty) => {
@@ -82,20 +121,27 @@ window.addEventListener('load', async () => {
                 break
         }
 
+        clearInterval(timeIntervalId)
+        timeIntervalId = ''
+        i = 0
+        count = 0
+        totalWrongChar = 0
+
         passage.textContent = text
         splitPassage()
 
         notStartedCon.style.display = ''
         timeSpan.textContent = '0:00'
-        clearInterval(timeIntervalId)
+        wpmSpan.textContent = '00'
+        accuracySpan.textContent = '0%'
         document.removeEventListener('keydown', type)
     }
-    // changeDifficulty('easy')
+    changeDifficulty('easy')
 
     const chooseMode = () => {
         switch (mode) {
             case 'timed':
-                timedMode(30)
+                timedMode(60)
                 break
             case 'passage':
                 passageMode()
@@ -103,17 +149,21 @@ window.addEventListener('load', async () => {
         }
     }
 
-    const timedMode = (sec) => {
-        console.log("timeed mode");
+    const formatTime = (totalSeconds) => {
+        const m = Math.floor(totalSeconds / 60)
+        const s = totalSeconds % 60
+        return `${m}:${s.toString().padStart(2, '0')}`
+    }
 
-        let time = (sec - count).toString().padStart(2, '0')
+    const timedMode = (sec) => {
+        let timeLeft = sec - count
         count++
-        timeSpan.textContent = `0:${time}`
+        timeSpan.textContent = formatTime(timeLeft)
 
         if (timeIntervalId == '') {
             timeIntervalId = setInterval(() => {
-                time = (sec - count).toString().padStart(2, '0')
-                timeSpan.textContent = `0:${time}`
+                timeLeft = sec - count
+                timeSpan.textContent = formatTime(timeLeft)
                 count++
             }, 1000)
             setTimeout(testFinished, sec * 1000)
@@ -149,9 +199,10 @@ window.addEventListener('load', async () => {
         resultCharacter.textContent = `${totalWrongChar}/${spans.length}`
 
         // Set personal best if new wpm is higher
-        if (personalBest < wpm) {
+        const pb = loadPersonalBest()
+        if (pb < wpm) {
             localStorage.setItem('personal-best', wpm)
-            personalBestSpan.textContent = personalBest
+            personalBestSpan.textContent = wpm
         }
     }
 
@@ -164,11 +215,16 @@ window.addEventListener('load', async () => {
     }
 
     const reset = () => {
+        clearInterval(timeIntervalId)
+        timeIntervalId = ''
         i = 0
         count = 0
         wpm = 0
         accuracy = 0
         totalWrongChar = 0
+        timeSpan.textContent = '0:00'
+        wpmSpan.textContent = '00'
+        accuracySpan.textContent = '0%'
 
         spans.forEach((span) => {
             span.classList.remove('correct')
@@ -182,49 +238,25 @@ window.addEventListener('load', async () => {
         document.addEventListener('keydown', type)
     }
 
-    const type = (e) => {
-        // console.log(e.key)
-        // Exit early if the key is in the ignore list
-        if (ignoredKeys.includes(e.key)) return
-
-        if (e.key == "Backspace") {
-            if (i > 0) i--
-            spans[i].classList.add('normal')
-        } else {
-            if (e.key == text[i]) {
-                spans[i].classList.add('correct')
-                spans[i].classList.remove('normal')
-                i++
-            } else {
-                spans[i].classList.add('incorrect')
-                spans[i].classList.remove('normal')
-                i++
-                totalWrongChar++
-            }
-
-            if (i < spans.length) {
-                spans[i - 1].classList.remove('cursor')
-                spans[i].classList.add('cursor')
-            }
-        }
-        passageMode(i)
-    }
-
     // Start the typing test
     startBtn.addEventListener('click', start)
 
     // Reset and start from begining
     resetBtn.addEventListener('click', reset)
 
-    difficultyInput.addEventListener('click', (e) => {
-        changeDifficulty(e.target.value)
+    difficultyInput.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="radio"]')) {
+            changeDifficulty(e.target.value)
+        }
     })
 
-    modeInput.addEventListener('click', (e) => {
-        mode = e.target.value
+    modeInput.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="radio"]')) {
+            mode = e.target.value
+        }
     })
 
-    goAgainBtn.addEventListener('click', ()=>{
+    goAgainBtn.addEventListener('click', () => {
         resultsCon.classList.add('hidden')
         reset()
     })
