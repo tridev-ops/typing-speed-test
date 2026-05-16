@@ -8,8 +8,7 @@ const accuracySpan = document.querySelector('.accuracy')
 const timeSpan = document.querySelector('.time')
 const personalBestSpan = document.querySelector('.personal-best')
 const difficultyInput = document.querySelector('.difficulty')
-// const modeInput = document.querySelector('.mode')
-
+const modeInput = document.querySelector('.mode')
 
 
 let i = 0
@@ -27,45 +26,29 @@ window.addEventListener('load', async () => {
     const data = await loadData()
     let text = 'sun rose over the quiet town' //data.easy[0].text
     const totalWords = text.split(" ").length
-    
+
     const personalBest = localStorage.getItem('personal-best');
     personalBestSpan.textContent = personalBest || "00"
-    
+
     let timeIntervalId
     let count = 0
     let wpm
     let accuracy
     let totalWrongChar = 0
-    
+
+    let spans
     const splitPassage = () => {
         // Split the passage into single characters
         passage.innerHTML = text
             .split("")
             .map(char => `<span>${char}</span>`)
             .join("")
-        const spans = passage.querySelectorAll("span")
+        spans = passage.querySelectorAll("span")
     }
     splitPassage()
 
-    const testFinished = () => {
-        console.log("Test completed in", count, "seconds")
-        clearInterval(timeIntervalId)
-        wpm = calculateWPM()
-        accuracy = calculateAccuracy()
-
-        console.log(wpm, accuracy)
-        wpmSpan.textContent = wpm
-        accuracySpan.textContent = `${accuracy}%`
-
-        // Set personal best if new wpm is higher
-        if (personalBest < wpm) {
-            localStorage.setItem('personal-best', wpm)
-            personalBestSpan.textContent = personalBest
-        }
-    }
-
     const calculateWPM = () => {
-        return (totalWords / count) * 60
+        return parseInt((totalWords / count) * 60)
     }
 
     const calculateAccuracy = () => {
@@ -100,6 +83,59 @@ window.addEventListener('load', async () => {
         changeDifficulty(e.target.value)
     })
 
+    const changeMode = (mode) => {
+        switch (mode) {
+            case 'timed':
+                timedMode(30)
+                break
+            case 'passage':
+                passageMode()
+                break
+        }
+    }
+    // changemode('timed')
+
+    modeInput.addEventListener('click', (e) => {
+        changeMode(e.target.value)
+    })
+
+    const timedMode = (sec) => {
+        let time = (sec-count).toString().padStart(2, '0')
+        count++
+        timeSpan.textContent = `0:${time}`
+        timeIntervalId = setInterval(() => {
+            time = (sec-count).toString().padStart(2, '0')
+            timeSpan.textContent = `0:${time}`
+            count++
+        }, 1000)
+        setTimeout(testFinished, sec*1000)
+    }
+
+    const passageMode = (i) => {
+        if (i == text.length) {
+            testFinished()
+        }
+        clearInterval(timeIntervalId)
+        timeSpan.textContent = '0:00'
+    }
+
+    const testFinished = () => {
+        clearInterval(timeIntervalId)
+        wpm = calculateWPM()
+        accuracy = calculateAccuracy()
+        wpmSpan.textContent = wpm
+        accuracySpan.textContent = `${accuracy}%`
+        
+        console.log("Test completed in", count, "seconds")
+        console.log(wpm, accuracy)
+
+        // Set personal best if new wpm is higher
+        if (personalBest < wpm) {
+            localStorage.setItem('personal-best', wpm)
+            personalBestSpan.textContent = personalBest
+        }
+    }
+
     document.addEventListener('keydown', (e) => {
         // console.log(e.key)
         // Exit early if the key is in the ignore list
@@ -116,10 +152,7 @@ window.addEventListener('load', async () => {
             i++
             totalWrongChar++
         }
-        if (i == text.length) {
-            testFinished()
-            return
-        }
+        passageMode(i)
     })
 
     // Reset and start from begining
@@ -133,20 +166,13 @@ window.addEventListener('load', async () => {
         spans.forEach((span) => {
             span.style.color = 'white'
         })
-
-        timeIntervalId = setInterval(() => {
-            // console.log(count++)
-            timeSpan.textContent = `0:${count++}`
-        }, 1000)
+        changeMode('timed')
     })
-        
+
     // Start the typing test
     start.addEventListener('click', () => {
         notStartedCon.style.display = 'none'
-        timeIntervalId = setInterval(() => {
-            // console.log(count++)
-            timeSpan.textContent = `0:${count++}`
-        }, 1000)
+        changeMode('timed')
     })
 })
 
