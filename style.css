@@ -126,3 +126,28 @@ input[type="radio"]:checked + label {
 input[type="radio"] {
     display:none;
 }
+
+.passage {
+    font-family: monospace;
+}
+
+.correct {
+    color: hsl(140, 63%, 57%);
+    text-decoration: none;
+}
+
+.incorrect {
+    color: hsl(354, 63%, 57%);
+    text-decoration: underline;
+    text-decoration-thickness: 4px;
+    text-underline-offset: 10px;
+}
+
+.normal {
+    color: white;
+    text-decoration: none;
+}
+
+.cursor {
+    background: hsl(240, 3%, 46%);
+}

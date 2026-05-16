@@ -1,7 +1,7 @@
 // const input = document.querySelector("#text")
 const passage = document.querySelector(".passage p")
-const reset = document.querySelector(".reset")
-const start = document.querySelector(".not-started button")
+const resetBtn = document.querySelector(".reset")
+const startBtn = document.querySelector(".not-started button")
 const notStartedCon = document.querySelector(".not-started")
 const wpmSpan = document.querySelector('.wpm')
 const accuracySpan = document.querySelector('.accuracy')
@@ -9,11 +9,6 @@ const timeSpan = document.querySelector('.time')
 const personalBestSpan = document.querySelector('.personal-best')
 const difficultyInput = document.querySelector('.difficulty')
 const modeInput = document.querySelector('.mode')
-
-
-let i = 0
-// List of modifier keys to ignore
-const ignoredKeys = ["Shift", "Control", "Alt", "Meta"]
 
 async function loadData() {
     const response = await fetch('data.json')
@@ -24,17 +19,22 @@ async function loadData() {
 window.addEventListener('load', async () => {
     // Get passages from json file
     const data = await loadData()
-    let text = 'sun rose over the quiet town' //data.easy[0].text
-    const totalWords = text.split(" ").length
+    let text = 'sun rose over the quiet town'
 
     const personalBest = localStorage.getItem('personal-best');
     personalBestSpan.textContent = personalBest || "00"
 
-    let timeIntervalId
+    // List of modifier keys to ignore
+    const ignoredKeys = ["Shift", "Control", "Alt", "Meta"]
+
+    let totalWords
+    let timeIntervalId = ''
+    let i = 0
     let count = 0
     let wpm
     let accuracy
     let totalWrongChar = 0
+    let mode = 'timed'
 
     let spans
     const splitPassage = () => {
@@ -44,6 +44,8 @@ window.addEventListener('load', async () => {
             .map(char => `<span>${char}</span>`)
             .join("")
         spans = passage.querySelectorAll("span")
+
+        totalWords = text.split(" ").length
     }
     splitPassage()
 
@@ -79,11 +81,7 @@ window.addEventListener('load', async () => {
     }
     // changeDifficulty('easy')
 
-    difficultyInput.addEventListener('click', (e) => {
-        changeDifficulty(e.target.value)
-    })
-
-    const changeMode = (mode) => {
+    const chooseMode = () => {
         switch (mode) {
             case 'timed':
                 timedMode(30)
@@ -93,39 +91,44 @@ window.addEventListener('load', async () => {
                 break
         }
     }
-    // changemode('timed')
-
-    modeInput.addEventListener('click', (e) => {
-        changeMode(e.target.value)
-    })
 
     const timedMode = (sec) => {
-        let time = (sec-count).toString().padStart(2, '0')
+        console.log("timeed mode");
+        
+        let time = (sec - count).toString().padStart(2, '0')
         count++
         timeSpan.textContent = `0:${time}`
-        timeIntervalId = setInterval(() => {
-            time = (sec-count).toString().padStart(2, '0')
-            timeSpan.textContent = `0:${time}`
-            count++
-        }, 1000)
-        setTimeout(testFinished, sec*1000)
+
+        if (timeIntervalId == '') {
+            timeIntervalId = setInterval(() => {
+                time = (sec - count).toString().padStart(2, '0')
+                timeSpan.textContent = `0:${time}`
+                count++
+            }, 1000)
+            setTimeout(testFinished, sec * 1000)
+        }
     }
 
     const passageMode = (i) => {
         if (i == text.length) {
             testFinished()
         }
-        clearInterval(timeIntervalId)
-        timeSpan.textContent = '0:00'
+        if (timeIntervalId == '') {
+            timeIntervalId = setInterval(() => {
+                count++
+            }, 1000)
+        }
     }
 
     const testFinished = () => {
         clearInterval(timeIntervalId)
+        document.removeEventListener('keydown', type)
+
         wpm = calculateWPM()
         accuracy = calculateAccuracy()
         wpmSpan.textContent = wpm
         accuracySpan.textContent = `${accuracy}%`
-        
+
         console.log("Test completed in", count, "seconds")
         console.log(wpm, accuracy)
 
@@ -136,27 +139,15 @@ window.addEventListener('load', async () => {
         }
     }
 
-    document.addEventListener('keydown', (e) => {
-        // console.log(e.key)
-        // Exit early if the key is in the ignore list
-        if (ignoredKeys.includes(e.key)) return
-        else if (e.key == "Backspace") {
-            if (i > 0) i--
-            spans[i].style.color = "white"
-        }
-        else if (e.key == text[i]) {
-            spans[i].style.color = "limegreen"
-            i++
-        } else {
-            spans[i].style.color = "red"
-            i++
-            totalWrongChar++
-        }
-        passageMode(i)
-    })
+    const start = () => {
+        notStartedCon.style.display = 'none'
+        spans[0].classList.add('cursor')
+        chooseMode()
+        // Handle input form keyboard
+        document.addEventListener('keydown', type)
+    }
 
-    // Reset and start from begining
-    reset.addEventListener('click', () => {
+    const reset = () => {
         i = 0
         count = 0
         wpm = 0
@@ -164,15 +155,57 @@ window.addEventListener('load', async () => {
         totalWrongChar = 0
 
         spans.forEach((span) => {
-            span.style.color = 'white'
+            span.classList.remove('correct')
+            span.classList.remove('incorrect')
+            span.classList.add('normal')
         })
-        changeMode('timed')
-    })
+        spans[spans.length - 1].classList.remove('cursor')
+        spans[0].classList.add('cursor')
+        chooseMode()
+        // Handle input form keyboard
+        document.addEventListener('keydown', type)
+    }
+
+    const type = (e) => {
+        // console.log(e.key)
+        // Exit early if the key is in the ignore list
+        if (ignoredKeys.includes(e.key)) return
+
+        if (e.key == "Backspace") {
+            if (i > 0) i--
+            spans[i].classList.add('normal')
+        } else {
+            if (e.key == text[i]) {
+                spans[i].classList.add('correct')
+                spans[i].classList.remove('normal')
+                i++
+            } else {
+                spans[i].classList.add('incorrect')
+                spans[i].classList.remove('normal')
+                i++
+                totalWrongChar++
+            }
+
+            if (i < spans.length) {
+                spans[i - 1].classList.remove('cursor')
+                spans[i].classList.add('cursor')
+            }
+        }
+            passageMode(i)
+    }
 
     // Start the typing test
-    start.addEventListener('click', () => {
-        notStartedCon.style.display = 'none'
-        changeMode('timed')
+    startBtn.addEventListener('click', start)
+
+    // Reset and start from begining
+    resetBtn.addEventListener('click', reset)
+
+    difficultyInput.addEventListener('click', (e) => {
+        changeDifficulty(e.target.value)
+    })
+
+    modeInput.addEventListener('click', (e) => {
+        mode = e.target.value
     })
 })
 
