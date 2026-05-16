@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css" type="text/css" media="all" />
 </head>
 
-<body class="bg-black text-white py-8 px-12">
+<body class="bg-black text-white py-8 px-12 relative">
     <header class="flex justify-between">
         <div class="flex gap-2 items-center">
             <img class="logo h-6" src="./assets/images/logo-small.svg" alt="logo" />
@@ -87,9 +87,33 @@
 
         <!-- not started -->
         <div
-            class="not-started backdrop-blur-sm bg-gray/40 flex justify-center items-center z-5 absolute h-full w-full top-[50%] left-[50%] -translate-[50%]">
+            class="not-started backdrop-blur-sm bg-gray/40 flex justify-center items-center absolute h-full w-full top-[50%] left-[50%] -translate-[50%]">
             <button type="button" class="bg-blue-500 px-4 py-2 rounded-lg text-lg">Start Typing Test</button>
         </div>
+    </div>
+
+    <div class="results flex flex-col justify-center self-center items-center absolute top-20 left-0 w-full bg-black h-full hidden">
+        <div class="rounded-full border-10 border-green-200 mt-80">
+            <img class="h-20 rounded-full border-10 border-green-300" src="assets/images/icon-completed.svg" alt="">
+        </div>
+        <h2 class="text-[2.5rem] mt-8">Test Completed</h2>
+        <p class="text-gray-300">Solid run, Keep pushing to beat your high score.</p>
+        <div class="flex gap-8 my-8">
+            <div class="border-1 border-gray-500 p-4 rounded-lg w-32">
+                <p class="text-gray-300">WPM</p>
+                <p class="font-bold text-xl wpm">50</p>
+            </div>
+            <div class="border-1 border-gray-500 p-4 rounded-lg w-32">
+                <p class="text-gray-300">Accuracy</p>
+                <p class="font-bold text-xl accuracy">50</p>
+            </div>
+            <div class="border-1 border-gray-500 p-4 rounded-lg w-32">
+                <p class="text-gray-300">Characters</p>
+                <p class="font-bold text-xl character">50</p>
+            </div>
+        </div>
+
+        <button class="bg-white text-black text-lg rounded-lg p-3 go-again">Go Again</button>
     </div>
 
     <!-- <input type="text" name="passage" id="text" class="bg-white text-black" > -->

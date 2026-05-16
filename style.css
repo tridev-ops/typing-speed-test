@@ -119,8 +119,8 @@ body {
 }
 
 input[type="radio"]:checked + label {
-  color: #185ee0;
-  border: 1px solid #185ee0;
+  color: hsl(214, 100%, 55%);
+  border: 1px solid hsl(214, 100%, 55%);
 }
 
 input[type="radio"] {
@@ -151,3 +151,4 @@ input[type="radio"] {
 .cursor {
     background: hsl(240, 3%, 46%);
 }
+

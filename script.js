@@ -9,6 +9,12 @@ const timeSpan = document.querySelector('.time')
 const personalBestSpan = document.querySelector('.personal-best')
 const difficultyInput = document.querySelector('.difficulty')
 const modeInput = document.querySelector('.mode')
+const resultsCon = document.querySelector('.results')
+const resultWpm = document.querySelector('.results .wpm')
+const resultAccuracy = document.querySelector('.results .accuracy')
+const resultCharacter = document.querySelector('.results .character')
+const goAgainBtn = document.querySelector('.go-again')
+
 
 async function loadData() {
     const response = await fetch('data.json')
@@ -78,6 +84,11 @@ window.addEventListener('load', async () => {
 
         passage.textContent = text
         splitPassage()
+
+        notStartedCon.style.display = ''
+        timeSpan.textContent = '0:00'
+        clearInterval(timeIntervalId)
+        document.removeEventListener('keydown', type)
     }
     // changeDifficulty('easy')
 
@@ -94,7 +105,7 @@ window.addEventListener('load', async () => {
 
     const timedMode = (sec) => {
         console.log("timeed mode");
-        
+
         let time = (sec - count).toString().padStart(2, '0')
         count++
         timeSpan.textContent = `0:${time}`
@@ -131,6 +142,11 @@ window.addEventListener('load', async () => {
 
         console.log("Test completed in", count, "seconds")
         console.log(wpm, accuracy)
+
+        resultsCon.classList.remove('hidden')
+        resultWpm.textContent = wpm
+        resultAccuracy.textContent = `${accuracy}%`
+        resultCharacter.textContent = `${totalWrongChar}/${spans.length}`
 
         // Set personal best if new wpm is higher
         if (personalBest < wpm) {
@@ -191,7 +207,7 @@ window.addEventListener('load', async () => {
                 spans[i].classList.add('cursor')
             }
         }
-            passageMode(i)
+        passageMode(i)
     }
 
     // Start the typing test
@@ -206,6 +222,11 @@ window.addEventListener('load', async () => {
 
     modeInput.addEventListener('click', (e) => {
         mode = e.target.value
+    })
+
+    goAgainBtn.addEventListener('click', ()=>{
+        resultsCon.classList.add('hidden')
+        reset()
     })
 })
 
