@@ -27,7 +27,8 @@ body {
     color: var(--neutral-0);
     font-family: 'Sora', sans-serif;
     padding: 32px 48px;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
     user-select: none;
 }
 
@@ -90,6 +91,8 @@ body {
     margin-top: 32px;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .stats-row {
@@ -132,11 +135,32 @@ body {
     display: flex;
     gap: 4px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .option-label {
     color: var(--neutral-400);
     font-size: 14px;
+}
+
+.time-select,
+.custom-duration {
+    background: var(--neutral-800);
+    border: 1px solid var(--neutral-500);
+    border-radius: 8px;
+    color: var(--neutral-0);
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.custom-duration {
+    width: 104px;
+}
+
+.time-select:focus,
+.custom-duration:focus {
+    outline: 1px solid var(--blue-600);
+    border-color: var(--blue-600);
 }
 
 /* ===== Radio Buttons ===== */
@@ -178,9 +202,10 @@ input[type="radio"]:checked + label {
 /* ===== Passage ===== */
 .passage {
     margin: 32px 0;
-    font-size: 40px;
+    font-size: clamp(20px, 2.2vw, 40px);
     position: relative;
     font-family: monospace;
+    line-height: 1.7;
 }
 
 .passage p {
@@ -191,6 +216,14 @@ input[type="radio"]:checked + label {
     margin: 32px 0;
     display: flex;
     justify-content: center;
+}
+
+.reset, .btn-start, .go-again {
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.reset:hover, .btn-start:hover, .go-again:hover {
+    transform: translateY(-1px);
 }
 
 .reset {
